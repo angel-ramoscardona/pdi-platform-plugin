@@ -55,13 +55,17 @@ public class PdiContentGenerator extends FileResourceContentGenerator {
 
     String pdiPath = repositoryFile.getPath();
     // Test
-    pdiComponent.setDirectory( FilenameUtils.getPathNoEndSeparator( pdiPath ) );
+    //if ( pdiPath.startsWith( "///" ) ) {
+     //pdiPath = "s3a:" + pdiPath;
+    //}
+    //pdiComponent.setDirectory( FilenameUtils.getPathNoEndSeparator( pdiPath ) );
+    pdiComponent.setDirectory( pdiPath.substring(0,pdiPath.lastIndexOf("/")) );
 
     // see if we are running a transformation or job
     if ( repositoryFile.getName().toLowerCase().endsWith( ".ktr" ) ) { //$NON-NLS-1$
-      pdiComponent.setTransformation( FilenameUtils.getBaseName( pdiPath ) );
+      pdiComponent.setTransformation( FilenameUtils.getName( pdiPath ) );
     } else if ( repositoryFile.getName().toLowerCase().endsWith( ".kjb" ) ) { //$NON-NLS-1$
-      pdiComponent.setJob( FilenameUtils.getBaseName( pdiPath ) );
+      pdiComponent.setJob( FilenameUtils.getName( pdiPath ) );
     }
     IPentahoSession session = PentahoSessionHolder.getSession();
     long start = System.currentTimeMillis();
